@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quality Diagnostic | Quality In Practice</title>
+  <meta name="description" content="A Crosby-inspired quality maturity diagnostic for small manufacturers.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <a class="brand" href="#top"><span>QIP</span><strong>Quality In Practice</strong></a>
+    <nav aria-label="Page navigation">
+      <a href="#diagnostic">Diagnostic</a>
+      <a href="#results">Results</a>
+      <a href="#next">Next Steps</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Crosby Quality Management Maturity Model</p>
+        <h1>Understand the maturity of your quality management system.</h1>
+        <p>This diagnostic helps small manufacturers evaluate quality maturity across the management behaviors, systems, problem-solving routines, and improvement habits described in Philip Crosby's maturity model.</p>
+        <div class="actions">
+          <a class="button" href="#diagnostic">Begin diagnostic</a>
+          <button class="button secondary" id="sample" type="button">Load sample results</button>
+        </div>
+      </div>
+      <aside class="panel">
+        <h2>The five maturity stages</h2>
+        <ol id="stageList"></ol>
+      </aside>
+    </section>
+
+    <section class="scale-band">
+      <div>
+        <h2>How to answer</h2>
+        <p>For each category, choose the Crosby maturity stage that most closely describes the current reality. Choose what is consistently true today, not what is intended.</p>
+      </div>
+      <div class="scale-note">
+        <strong>Result:</strong> Your answers produce an overall maturity stage, category gaps, and suggested Quality Academy next steps.
+      </div>
+    </section>
+
+    <section class="diagnostic" id="diagnostic">
+      <aside class="progress">
+        <p class="eyebrow">Progress</p>
+        <h2 id="progressText">0% complete</h2>
+        <progress id="progressBar" max="100" value="0"></progress>
+        <p id="answeredText">0 of 6 categories answered.</p>
+        <button class="button secondary full" id="reset" type="button">Reset</button>
+      </aside>
+      <form id="form" class="questions"></form>
+    </section>
+
+    <section class="results" id="results" aria-live="polite">
+      <div class="section-head">
+        <p class="eyebrow">Results</p>
+        <h2>Your quality maturity profile</h2>
+        <p>Results update as you answer. Complete all categories for the best recommendation.</p>
+      </div>
+      <div class="result-grid">
+        <article class="score-card">
+          <span>Overall maturity</span>
+          <strong id="overallStage">Incomplete</strong>
+          <p id="overallSummary">Answer the diagnostic to see your overall maturity stage.</p>
+        </article>
+        <article class="score-card">
+          <span>Most mature area</span>
+          <strong id="strongest">--</strong>
+          <p id="strongestText">Your strongest quality maturity category will appear here.</p>
+        </article>
+        <article class="score-card">
+          <span>Priority area</span>
+          <strong id="priority">--</strong>
+          <p id="priorityText">Your priority quality maturity gap will appear here.</p>
+        </article>
+      </div>
+      <div class="chart-card">
+        <canvas id="chart" width="920" height="360" aria-label="Quality maturity chart"></canvas>
+      </div>
+      <div id="recommendations" class="recommendations"></div>
+    </section>
+
+    <section class="next" id="next">
+      <div>
+        <p class="eyebrow">Next Steps</p>
+        <h2>Use the maturity profile to choose the right quality capability path.</h2>
+        <p>Quality In Practice can help turn these results into a focused action plan, targeted Quality Academy modules, or fractional quality and Operational Excellence support.</p>
+      </div>
+      <div class="actions">
+        <button class="button" id="print" type="button">Print results</button>
+        <a class="button secondary" id="email" href="mailto:info@qualityinpractice.solutions?subject=Quality%20Diagnostic">Discuss results</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Quality In Practice</span>
+    <span>Quality capability for small manufacturers.</span>
+  </footer>
+
+  <script src="quality-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
