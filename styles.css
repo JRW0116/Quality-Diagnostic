@@ -36,6 +36,7 @@ header {
   backdrop-filter: blur(12px);
 }
 .brand, nav, .actions { display: flex; align-items: center; gap: 14px; }
+.actions { flex-wrap: wrap; }
 .brand { text-decoration: none; }
 .brand span {
   width: 42px;
@@ -190,6 +191,7 @@ canvas { display: block; width: 100%; max-width: 100%; }
   background: var(--ink);
 }
 .next p { color: #d3dee7; }
+.send-status { width: 100%; margin: 2px 0 0; color: #d3dee7; font-size: .92rem; }
 footer {
   display: flex;
   justify-content: space-between;
