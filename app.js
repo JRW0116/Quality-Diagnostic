@@ -15,6 +15,7 @@
   const chart = document.getElementById("chart");
   const ctx = chart.getContext("2d");
   const storageKey = "qip-quality-diagnostic-v1";
+  let latestResultsText = "";
 
   function node(tag, attrs = {}, children = []) {
     const el = document.createElement(tag);
@@ -136,18 +137,42 @@
   }
 
   function updateEmail(scores, average, stage) {
-    const lines = scores.map((item) => `${item.name}: ${item.stage ? item.stage.name : "Incomplete"}`).join("%0D%0A");
+    const lines = scores.map((item) => `${item.name}: ${item.stage ? item.stage.name : "Incomplete"}`).join("\n");
+    const ranked = scores.filter((item) => item.score).sort((a, b) => a.score - b.score);
+    const priority = ranked[0];
+    const recommendationsText = ranked
+      .map((item) => `${item.name}: ${item.recommendation}\nSuggested path: ${item.academyPath}`)
+      .join("\n\n");
     const body = [
       "I completed the Quality Diagnostic.",
       "",
       `Overall maturity: ${stage ? stage.name : "Incomplete"} (${average ? average.toFixed(1) : "--"})`,
+      priority ? `Priority area: ${priority.name}` : "Priority area: Incomplete",
       "",
       "Category results:",
       lines,
       "",
-      "I would like to discuss the best next step."
-    ].join("%0D%0A");
-    document.getElementById("email").href = `mailto:info@qualityinpractice.solutions?subject=Quality%20Diagnostic&body=${body}`;
+      "Recommended next steps:",
+      recommendationsText || "Complete the diagnostic for recommendations.",
+      "",
+      "Please follow up with me about the best next step."
+    ].join("\n");
+    latestResultsText = body;
+    document.getElementById("email").href = `mailto:info@qualityinpractice.solutions?subject=${encodeURIComponent("Quality Diagnostic Results")}&body=${encodeURIComponent(body)}`;
+  }
+
+  async function copyResults() {
+    const status = document.getElementById("sendStatus");
+    if (!latestResultsText) {
+      status.textContent = "Complete at least one category before copying results.";
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(latestResultsText);
+      status.textContent = "Results copied. Paste them into an email to info@qualityinpractice.solutions.";
+    } catch {
+      status.textContent = "Copy was blocked by the browser. Use the email button to send results instead.";
+    }
   }
 
   function update() {
@@ -217,6 +242,7 @@
     update();
   });
   document.getElementById("print").addEventListener("click", () => window.print());
+  document.getElementById("copy").addEventListener("click", copyResults);
   form.addEventListener("change", update);
 
   buildStages();
