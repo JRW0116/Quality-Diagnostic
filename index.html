@@ -6,6 +6,29 @@
   <title>Quality Diagnostic | Quality In Practice</title>
   <meta name="description" content="A Crosby-inspired quality maturity diagnostic for small manufacturers.">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .company-entry {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+    }
+    .company-entry label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+    .company-entry input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+      color: var(--ink);
+      font: inherit;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -52,7 +75,12 @@
         <p id="answeredText">0 of 6 categories answered.</p>
         <button class="button secondary full" id="reset" type="button">Reset</button>
       </aside>
-      <form id="form" class="questions"></form>
+      <form id="form" class="questions">
+        <div class="company-entry">
+          <label for="companyName">Company name</label>
+          <input id="companyName" name="companyName" type="text" autocomplete="organization" placeholder="Enter company name">
+        </div>
+      </form>
     </section>
 
     <section class="results" id="results" aria-live="polite">
@@ -106,5 +134,48 @@
 
   <script src="quality-data.js"></script>
   <script src="app.js"></script>
+  <script>
+    (function () {
+      const input = document.getElementById("companyName");
+      const link = document.getElementById("email");
+      const copy = document.getElementById("copy");
+      const form = document.getElementById("form");
+      const sample = document.getElementById("sample");
+      const storageKey = "qip-quality-company-v1";
+
+      function resultBody() {
+        const href = link.href || "";
+        const query = href.includes("?") ? href.slice(href.indexOf("?") + 1) : "";
+        const params = new URLSearchParams(query);
+        return params.get("body") || "";
+      }
+
+      function patchResults() {
+        const companyLine = `Company name: ${input.value.trim() || "Not provided"}`;
+        localStorage.setItem(storageKey, input.value.trim());
+        if (!link.href.startsWith("mailto:")) return;
+        const base = link.href.split("?")[0];
+        const params = new URLSearchParams(link.href.includes("?") ? link.href.slice(link.href.indexOf("?") + 1) : "");
+        const body = params.get("body") || "";
+        const nextBody = body.includes("Company name:")
+          ? body.replace(/Company name:.*(\n|$)/, `${companyLine}\n`)
+          : body.replace(/\n\n/, `\n\n${companyLine}\n\n`);
+        params.set("body", nextBody || companyLine);
+        link.href = `${base}?${params.toString()}`;
+      }
+
+      input.value = localStorage.getItem(storageKey) || "";
+      input.addEventListener("input", patchResults);
+      form.addEventListener("change", () => setTimeout(patchResults, 0));
+      sample.addEventListener("click", () => setTimeout(patchResults, 50));
+      copy.addEventListener("click", () => {
+        setTimeout(() => {
+          const body = resultBody();
+          if (body && navigator.clipboard) navigator.clipboard.writeText(body);
+        }, 50);
+      });
+      setTimeout(patchResults, 0);
+    })();
+  </script>
 </body>
 </html>
