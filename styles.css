@@ -250,3 +250,29 @@ nav a.active,.tabs button.active,.tab.active{border-color:var(--qip-mint)}
 .summary>*,.metrics>*,.stats>*{border-radius:0;box-shadow:none;border-top:4px solid var(--qip-mint)}
 footer,.site-footer{border-top:1px solid var(--qip-black)}
 @media(max-width:700px){.app-header,.site-header,body>header,.hero{border-bottom-width:6px}}
+
+
+/* Quality In Practice header lockup */
+.brand{gap:14px}
+.brand img{
+  width:42px;
+  height:42px;
+  display:block;
+  flex:0 0 42px;
+  object-fit:cover;
+  border:1px solid var(--qip-black);
+  border-radius:8px;
+  background:var(--qip-white);
+}
+.brand strong{
+  font-family:Inter,"Avenir Next",Manrope,"Helvetica Neue",Arial,sans-serif;
+  font-size:1rem;
+  font-weight:500;
+  line-height:1;
+  letter-spacing:-.018em;
+}
+@media(max-width:520px){
+  .brand{gap:10px}
+  .brand img{width:38px;height:38px;flex-basis:38px}
+  .brand strong{font-size:.92rem}
+}
